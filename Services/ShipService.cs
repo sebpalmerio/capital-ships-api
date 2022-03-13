@@ -8,15 +8,15 @@ using ShipsAPI.Abstractions;
 
 namespace ShipsAPI.Services
 {
-    public class ShipsService : IShipsService
+    public class ShipService : IShipService
     {
-        public ShipsService()
+        public ShipService()
         {
         }
 
-        public IEnumerable<QueryModel> Query()
+        public List<QueryModel> Query()
         {
-            IEnumerable<QueryModel> models = Enumerable.Empty<QueryModel>();
+            List<QueryModel> models = new List<QueryModel>();
             using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
             {
                 connection.Open();
@@ -33,7 +33,7 @@ namespace ShipsAPI.Services
                     {
                         QueryModel model = new QueryModel();
                         model.BattleName = reader["name"].ToString();
-                        models.Append(model);
+                        models.Add(model);
                     }
                 }
                 connection.Close();

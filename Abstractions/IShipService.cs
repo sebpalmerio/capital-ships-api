@@ -7,9 +7,9 @@ using ShipsAPI.Services;
 
 namespace ShipsAPI.Abstractions
 {
-    public interface IShipsService
+    public interface IShipService
     {
-        IEnumerable<QueryModel> Query();
+        List<QueryModel> Query();
         MaxSunkDisplacementModel MaxSunkDisplacement();
     }
 }

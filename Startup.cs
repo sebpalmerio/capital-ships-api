@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using ShipsAPI.Abstractions;
+using ShipsAPI.Services;
 
 namespace ShipsAPI
 {
@@ -33,6 +35,8 @@ namespace ShipsAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShipsAPI", Version = "v1" });
             });
+
+            services.AddScoped<IShipService, ShipService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

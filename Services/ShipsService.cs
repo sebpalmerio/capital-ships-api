@@ -1,18 +1,22 @@
 using System;
-using ShipsAPI.Models;
+using System.Linq;
+using ShipsAPI.Models.Queries;
+using ShipsAPI.Models.Tables;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
+using ShipsAPI.Abstractions;
 
 namespace ShipsAPI.Services
 {
-    public class ShipsService
+    public class ShipsService : IShipsService
     {
         public ShipsService()
         {
         }
 
-        public void Query()
+        public IEnumerable<QueryModel> Query()
         {
+            IEnumerable<QueryModel> models = Enumerable.Empty<QueryModel>();
             using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
             {
                 connection.Open();
@@ -27,12 +31,46 @@ namespace ShipsAPI.Services
                 {
                     while (reader.Read())
                     {
-                        var name = reader.GetString(0);
-                        Console.WriteLine($"Hello, {name}!");
+                        QueryModel model = new QueryModel();
+                        model.BattleName = reader["name"].ToString();
+                        models.Append(model);
                     }
                 }
+                connection.Close();
             }
+            return models;
+        }
+        
+        // selects the name of the heaviest ship that was sunk in battle, the battle in which it fought, and the date
+        public MaxSunkDisplacementModel MaxSunkDisplacement()
+        {
+            MaxSunkDisplacementModel model = new MaxSunkDisplacementModel();
+            using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
+            {
+                connection.Open();
 
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    SELECT O.shipName, O.battleName, B.date
+                    FROM Classes AS C, Ships AS S, Outcomes AS O, Battles AS B
+                    WHERE (O.result = 'sunk') AND (S.name = O.shipName) AND (C.className = S.class) AND
+                          (O.battleName = B.name) AND
+                          (C.displacement IN (SELECT MAX(C.displacement)
+                                              FROM Classes AS C, Ships AS S, Outcomes AS O, Battles AS B
+                                              WHERE (O.result = 'sunk') AND (S.name = O.shipName) AND
+                                                    (C.className = S.class) AND (O.battleName = B.name)));
+                ";
+                using (var reader = command.ExecuteReader())
+                {
+                    reader.Read();
+                    model.ShipName = reader["shipName"].ToString();
+                    model.BattleName = reader["battleName"].ToString();
+                    model.Date = reader["date"].ToString();
+                }
+                connection.Close();
+            }
+            return model;
         }
     }
 }

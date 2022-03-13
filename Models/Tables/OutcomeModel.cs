@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ShipsAPI.Models
+namespace ShipsAPI.Models.Tables
 {
     public class OutcomeModel
     {

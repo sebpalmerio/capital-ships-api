@@ -17,14 +17,14 @@ namespace ShipsAPI
         {
             CreateHostBuilder(args).Build().Run();
 
-            ShipService ships = new ShipService();
-            // MaxSunkDisplacementModel model = ships.MaxSunkDisplacement();
-            // Console.WriteLine($"{model.BattleName}, {model.ShipName}, {model.Date}");
-            List<QueryModel> models = ships.Query();
-            foreach (QueryModel model in models)
-            {
-                Console.WriteLine($"{model.BattleName}");
-            }
+            // ShipService ships = new ShipService();
+            // // // MaxSunkDisplacementModel model = ships.MaxSunkDisplacement();
+            // // // Console.WriteLine($"{model.BattleName}, {model.ShipName}, {model.Date}");
+            // // List<QueryModel> models = ships.Query();
+            // // foreach (QueryModel model in models)
+            // // {
+            // //     Console.WriteLine($"{model.BattleName}");
+            // // }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShipsAPI.Abstractions;
+using ShipsAPI.Models.Tables;
 using ShipsAPI.Models.Queries;
 using System;
 using System.Linq;
@@ -17,10 +18,40 @@ namespace ShipsAPI.Controllers
             shipService = _shipService ?? throw new ArgumentNullException(nameof(_shipService));
         }
 
-        [HttpGet(Name = "GetBattleNames")]
-        public ActionResult<List<QueryModel>> Get()
+        [HttpGet("GetShips")]
+        public ActionResult<List<ShipModel>> GetShips()
+        {
+            return Ok(shipService.GetShips());
+        }
+
+        [HttpGet("GetBattles")]
+        public ActionResult<List<BattleModel>> GetBattles()
+        {
+            return Ok(shipService.GetBattles());
+        }
+
+        [HttpGet("GetOutcomes")]
+        public ActionResult<List<OutcomeModel>> GetOutcomes()
+        {
+            return Ok(shipService.GetOutcomes());
+        }
+
+        [HttpGet("GetClasses")]
+        public ActionResult<List<ClassModel>> GetClasses()
+        {
+            return Ok(shipService.GetClasses());
+        }
+
+        [HttpGet("GetBattleNames")]
+        public ActionResult<List<QueryModel>> GetBattleNames()
         {
             return Ok(shipService.Query());
+        }
+
+        [HttpGet("GetMaxSunkDisplacement")]
+        public ActionResult<MaxSunkDisplacementModel> Get()
+        {
+            return Ok(shipService.MaxSunkDisplacement());
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using ShipsAPI.Models.Tables;
 using ShipsAPI.Models.Queries;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
@@ -9,6 +10,10 @@ namespace ShipsAPI.Abstractions
 {
     public interface IShipService
     {
+        List<ShipModel> GetShips();
+        List<BattleModel> GetBattles();
+        List<OutcomeModel> GetOutcomes();
+        List<ClassModel> GetClasses();
         List<QueryModel> Query();
         MaxSunkDisplacementModel MaxSunkDisplacement();
     }

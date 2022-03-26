@@ -10,10 +10,6 @@ namespace ShipsAPI.Services
 {
     public class ShipService : IShipService
     {
-        public ShipService()
-        {
-        }
-
         public List<ShipModel> GetShips()
         {
             List<ShipModel> models = new List<ShipModel>();
@@ -188,6 +184,97 @@ namespace ShipsAPI.Services
                 connection.Close();
             }
             return model;
+        }
+
+        public void AddShipModel(ShipModel model)
+        {
+            using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    INSERT INTO Ships (name, class, launched)
+                    VALUES ($name, $class, $launched)
+                ";
+
+                command.Parameters.AddWithValue("$name", model.Name);
+                command.Parameters.AddWithValue("$class", model.Class);
+                command.Parameters.AddWithValue("$launched", model.Launched);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+
+        public void AddBattleModel(BattleModel model)
+        {
+            using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    INSERT INTO Battlees (name, date)
+                    VALUES ($name, $date)
+                ";
+
+                command.Parameters.AddWithValue("$name", model.Name);
+                command.Parameters.AddWithValue("$date", model.Date);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+
+
+        public void AddOutcomeModel(OutcomeModel model)
+        {
+            using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    INSERT INTO Outcomes (shipName, battleName, result)
+                    VALUES ($shipName, $battleName, $result)
+                ";
+
+                command.Parameters.AddWithValue("$shipName", model.ShipName);
+                command.Parameters.AddWithValue("$battleName", model.BattleName);
+                command.Parameters.AddWithValue("$result", model.Result);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+
+        public void AddClassModel(ClassModel model)
+        {
+            using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    INSERT INTO Classes (className, type, country, numGun, bore, displacement)
+                    VALUES ($className, $type, $country, $numGun, $bore, $displacement)
+                ";
+
+                command.Parameters.AddWithValue("$ClassName", model.ClassName);
+                command.Parameters.AddWithValue("$type", model.Type);
+                command.Parameters.AddWithValue("$country", model.Country);
+                command.Parameters.AddWithValue("$numGun", model.NumGun);
+                command.Parameters.AddWithValue("$bore", model.Bore);
+                command.Parameters.AddWithValue("$displacement", model.Displacement);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
         }
     }
 }

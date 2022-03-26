@@ -53,6 +53,35 @@ namespace ShipsAPI.Controllers
         {
             return Ok(shipService.MaxSunkDisplacement());
         }
+
+        [HttpPost("InsertShip")]
+        public IActionResult Post([FromBody] ShipModel entity)
+        {
+            shipService.AddShipModel(entity);
+            return CreatedAtAction(nameof(Get), entity);
+        }
+
+
+        [HttpPost("InsertBattle")]
+        public IActionResult Post([FromBody] BattleModel entity)
+        {
+            shipService.AddBattleModel(entity);
+            return CreatedAtAction(nameof(Get), entity);
+        }
+
+        [HttpPost("InsertOutcome")]
+        public IActionResult Post([FromBody] OutcomeModel entity)
+        {
+            shipService.AddOutcomeModel(entity);
+            return CreatedAtAction(nameof(Get), entity);
+        }
+
+        [HttpPost("InsertClass")]
+        public IActionResult Post([FromBody] ClassModel entity)
+        {
+            shipService.AddClassModel(entity);
+            return CreatedAtAction(nameof(Get), entity);
+        }
     }
 
 }

@@ -8,11 +8,11 @@ using CapitalShipsAPI.Abstractions;
 
 namespace CapitalShipsAPI.Services
 {
-    public class ShipService : IShipService
+    public class BattleService : IBattleService
     {
-        public List<ShipModel> GetShips()
+        public List<BattleModel> GetBattles()
         {
-            List<ShipModel> models = new List<ShipModel>();
+            List<BattleModel> models = new List<BattleModel>();
             using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
             {
                 connection.Open();
@@ -21,16 +21,15 @@ namespace CapitalShipsAPI.Services
                 command.CommandText =
                 @"
                     SELECT *
-                    FROM Ships
+                    FROM Battles
                 ";
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        ShipModel model = new ShipModel();
+                        BattleModel model = new BattleModel();
                         model.Name = reader["name"].ToString();
-                        model.Class = reader["class"].ToString();
-                        model.Launched = Convert.ToInt32(reader["launched"]);
+                        model.Date = reader["date"].ToString();
                         models.Add(model);
                     }
                 }
@@ -39,7 +38,7 @@ namespace CapitalShipsAPI.Services
             return models;
         }
 
-        public void AddShipModel(ShipModel model)
+        public void AddBattleModel(BattleModel model)
         {
             using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
             {
@@ -48,20 +47,19 @@ namespace CapitalShipsAPI.Services
                 var command = connection.CreateCommand();
                 command.CommandText =
                 @"
-                    INSERT INTO Ships (name, class, launched)
-                    VALUES ($name, $class, $launched)
+                    INSERT INTO Battlees (name, date)
+                    VALUES ($name, $date)
                 ";
 
                 command.Parameters.AddWithValue("$name", model.Name);
-                command.Parameters.AddWithValue("$class", model.Class);
-                command.Parameters.AddWithValue("$launched", model.Launched);
+                command.Parameters.AddWithValue("$date", model.Date);
                 command.ExecuteNonQuery();
 
                 connection.Close();
             }
         }
 
-        public void DeleteShipModel(string Name)
+        public void DeleteBattleModel(string Name)
         {
             using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
             {
@@ -70,16 +68,16 @@ namespace CapitalShipsAPI.Services
                 command.CommandText =
                 @"
                     DELETE FROM Outcomes
-                    WHERE shipName LIKE $name
-                ";                
+                    WHERE battleName LIKE $name
+                ";
                 command.Parameters.AddWithValue("$name", Name);
                 command.ExecuteNonQuery();
 
                 command.CommandText =
                 @"
-                    DELETE FROM Ships
+                    DELETE FROM Battles
                     WHERE name LIKE $name
-                ";                
+                ";
                 command.ExecuteNonQuery();
 
                 connection.Close();

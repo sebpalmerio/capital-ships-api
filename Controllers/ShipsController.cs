@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
-using ShipsAPI.Abstractions;
-using ShipsAPI.Models.Tables;
-using ShipsAPI.Models.Queries;
+using CapitalShipsAPI.Abstractions;
+using CapitalShipsAPI.Models.Tables;
+using CapitalShipsAPI.Models.Queries;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace ShipsAPI.Controllers
+namespace CapitalShipsAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ShipController : ControllerBase
     {
         private readonly IShipService shipService;
@@ -19,39 +19,10 @@ namespace ShipsAPI.Controllers
         }
 
         [HttpGet("GetShips")]
-        public ActionResult<List<ShipModel>> GetShips()
+        [ActionName(nameof(Get))]
+        public ActionResult<List<ShipModel>> Get()
         {
             return Ok(shipService.GetShips());
-        }
-
-        [HttpGet("GetBattles")]
-        public ActionResult<List<BattleModel>> GetBattles()
-        {
-            return Ok(shipService.GetBattles());
-        }
-
-        [HttpGet("GetOutcomes")]
-        public ActionResult<List<OutcomeModel>> GetOutcomes()
-        {
-            return Ok(shipService.GetOutcomes());
-        }
-
-        [HttpGet("GetClasses")]
-        public ActionResult<List<ClassModel>> GetClasses()
-        {
-            return Ok(shipService.GetClasses());
-        }
-
-        [HttpGet("GetBattleNames")]
-        public ActionResult<List<QueryModel>> GetBattleNames()
-        {
-            return Ok(shipService.Query());
-        }
-
-        [HttpGet("GetMaxSunkDisplacement")]
-        public ActionResult<MaxSunkDisplacementModel> Get()
-        {
-            return Ok(shipService.MaxSunkDisplacement());
         }
 
         [HttpPost("InsertShip")]
@@ -61,27 +32,11 @@ namespace ShipsAPI.Controllers
             return CreatedAtAction(nameof(Get), entity);
         }
 
-
-        [HttpPost("InsertBattle")]
-        public IActionResult Post([FromBody] BattleModel entity)
+        [HttpDelete("DeleteShip")]
+        public IActionResult Delete([FromQuery] string Name)
         {
-            shipService.AddBattleModel(entity);
-            return CreatedAtAction(nameof(Get), entity);
-        }
-
-        [HttpPost("InsertOutcome")]
-        public IActionResult Post([FromBody] OutcomeModel entity)
-        {
-            shipService.AddOutcomeModel(entity);
-            return CreatedAtAction(nameof(Get), entity);
-        }
-
-        [HttpPost("InsertClass")]
-        public IActionResult Post([FromBody] ClassModel entity)
-        {
-            shipService.AddClassModel(entity);
-            return CreatedAtAction(nameof(Get), entity);
+            shipService.DeleteShipModel(Name);
+            return Ok("Ship deleted");
         }
     }
-
 }

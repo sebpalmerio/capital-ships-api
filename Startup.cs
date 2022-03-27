@@ -12,10 +12,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-using ShipsAPI.Abstractions;
-using ShipsAPI.Services;
+using CapitalShipsAPI.Abstractions;
+using CapitalShipsAPI.Services;
 
-namespace ShipsAPI
+namespace CapitalShipsAPI
 {
     public class Startup
     {
@@ -33,10 +33,14 @@ namespace ShipsAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShipsAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CapitalShipsAPI", Version = "v1" });
             });
 
             services.AddScoped<IShipService, ShipService>();
+            services.AddScoped<IBattleService, BattleService>();
+            services.AddScoped<IOutcomeService, OutcomeService>();
+            services.AddScoped<IClassService, ClassService>();
+            services.AddScoped<IQueryService, QueryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +50,7 @@ namespace ShipsAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShipsAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CapitalShipsAPI v1"));
             }
 
             app.UseHttpsRedirection();

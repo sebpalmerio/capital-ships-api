@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ShipsAPI.Models.Tables
+namespace CapitalShipsAPI.Models.Tables
 {
     public class ShipModel
     {

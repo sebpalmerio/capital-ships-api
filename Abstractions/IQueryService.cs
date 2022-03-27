@@ -8,10 +8,9 @@ using CapitalShipsAPI.Services;
 
 namespace CapitalShipsAPI.Abstractions
 {
-    public interface IShipService
+    public interface IQueryService
     {
-        List<ShipModel> GetShips();
-        void AddShipModel(ShipModel model);
-        public void DeleteShipModel(string Name);    
+        List<QueryModel> Query();
+        MaxSunkDisplacementModel MaxSunkDisplacement();  
     }
 }

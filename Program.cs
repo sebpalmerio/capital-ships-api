@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using ShipsAPI.Models.Queries;
+using CapitalShipsAPI.Models.Queries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using ShipsAPI.Services;
+using CapitalShipsAPI.Services;
 
-namespace ShipsAPI
+namespace CapitalShipsAPI
 {
     public class Program
     {

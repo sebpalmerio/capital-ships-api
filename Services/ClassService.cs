@@ -8,11 +8,11 @@ using CapitalShipsAPI.Abstractions;
 
 namespace CapitalShipsAPI.Services
 {
-    public class ShipService : IShipService
+    public class ClassService : IClassService
     {
-        public List<ShipModel> GetShips()
+        public List<ClassModel> GetClasses()
         {
-            List<ShipModel> models = new List<ShipModel>();
+            List<ClassModel> models = new List<ClassModel>();
             using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
             {
                 connection.Open();
@@ -21,25 +21,27 @@ namespace CapitalShipsAPI.Services
                 command.CommandText =
                 @"
                     SELECT *
-                    FROM Ships
+                    FROM Classes
                 ";
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        ShipModel model = new ShipModel();
-                        model.Name = reader["name"].ToString();
-                        model.Class = reader["class"].ToString();
-                        model.Launched = Convert.ToInt32(reader["launched"]);
+                        ClassModel model = new ClassModel();
+                        model.ClassName = reader["className"].ToString();
+                        model.Type = reader["type"].ToString();
+                        model.Country = reader["country"].ToString();
+                        model.NumGun = Convert.ToInt32(reader["numGun"]);
+                        model.Bore = Convert.ToInt32(reader["bore"]);
                         models.Add(model);
                     }
                 }
                 connection.Close();
             }
             return models;
-        }
+        }            
 
-        public void AddShipModel(ShipModel model)
+        public void AddClassModel(ClassModel model)
         {
             using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
             {
@@ -48,20 +50,23 @@ namespace CapitalShipsAPI.Services
                 var command = connection.CreateCommand();
                 command.CommandText =
                 @"
-                    INSERT INTO Ships (name, class, launched)
-                    VALUES ($name, $class, $launched)
+                    INSERT INTO Classes (className, type, country, numGun, bore, displacement)
+                    VALUES ($className, $type, $country, $numGun, $bore, $displacement)
                 ";
 
-                command.Parameters.AddWithValue("$name", model.Name);
-                command.Parameters.AddWithValue("$class", model.Class);
-                command.Parameters.AddWithValue("$launched", model.Launched);
+                command.Parameters.AddWithValue("$ClassName", model.ClassName);
+                command.Parameters.AddWithValue("$type", model.Type);
+                command.Parameters.AddWithValue("$country", model.Country);
+                command.Parameters.AddWithValue("$numGun", model.NumGun);
+                command.Parameters.AddWithValue("$bore", model.Bore);
+                command.Parameters.AddWithValue("$displacement", model.Displacement);
                 command.ExecuteNonQuery();
 
                 connection.Close();
             }
         }
 
-        public void DeleteShipModel(string Name)
+        public void DeleteClassModel(string Name)
         {
             using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
             {
@@ -69,17 +74,17 @@ namespace CapitalShipsAPI.Services
                 var command = connection.CreateCommand();
                 command.CommandText =
                 @"
-                    DELETE FROM Outcomes
-                    WHERE shipName LIKE $name
-                ";                
+                    DELETE FROM Ships
+                    WHERE class LIKE $name
+                ";
                 command.Parameters.AddWithValue("$name", Name);
                 command.ExecuteNonQuery();
 
                 command.CommandText =
                 @"
-                    DELETE FROM Ships
-                    WHERE name LIKE $name
-                ";                
+                    DELETE FROM Classes
+                    WHERE className LIKE $name
+                ";
                 command.ExecuteNonQuery();
 
                 connection.Close();

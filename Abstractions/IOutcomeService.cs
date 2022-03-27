@@ -8,10 +8,10 @@ using CapitalShipsAPI.Services;
 
 namespace CapitalShipsAPI.Abstractions
 {
-    public interface IShipService
+    public interface IOutcomeService
     {
-        List<ShipModel> GetShips();
-        void AddShipModel(ShipModel model);
-        public void DeleteShipModel(string Name);    
+        List<OutcomeModel> GetOutcomes();
+        void AddOutcomeModel(OutcomeModel model);
+        public void DeleteOutcomeModel(string Name);    
     }
 }

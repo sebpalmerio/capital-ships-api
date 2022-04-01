@@ -1,10 +1,10 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using CapitalShipsAPI.Exceptions;
+using System;
+
 namespace CapitalShipsAPI.Filters
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Filters;
-    using CapitalShipsAPI.Exceptions;
-    using System;
-
     public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
     {
         public int Order { get; } = int.MaxValue - 10;

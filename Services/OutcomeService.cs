@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-using CapitalShipsAPI.Models.Queries;
 using CapitalShipsAPI.Models.Tables;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;

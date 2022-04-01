@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CapitalShipsAPI.Abstractions;
 using CapitalShipsAPI.Models.Tables;
-using CapitalShipsAPI.Models.Queries;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace CapitalShipsAPI.Controllers

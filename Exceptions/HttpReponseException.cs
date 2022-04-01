@@ -1,7 +1,7 @@
+using System;
+
 namespace CapitalShipsAPI.Exceptions
 {
-    using System;
-
     public class HttpResponseException : Exception
     {
         public int Status { get; set; } = 500;

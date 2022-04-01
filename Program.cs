@@ -1,13 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using CapitalShipsAPI.Models.Queries;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using CapitalShipsAPI.Services;
 
 namespace CapitalShipsAPI
 {
@@ -16,15 +8,6 @@ namespace CapitalShipsAPI
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-
-            // ShipService ships = new ShipService();
-            // // // MaxSunkDisplacementModel model = ships.MaxSunkDisplacement();
-            // // // Console.WriteLine($"{model.BattleName}, {model.ShipName}, {model.Date}");
-            // // List<QueryModel> models = ships.Query();
-            // // foreach (QueryModel model in models)
-            // // {
-            // //     Console.WriteLine($"{model.BattleName}");
-            // // }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

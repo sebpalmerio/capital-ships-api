@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace CapitalShipsAPI.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
     [ApiController]
     public class ErrorController : ControllerBase
     {

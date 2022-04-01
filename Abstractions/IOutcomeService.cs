@@ -12,6 +12,6 @@ namespace CapitalShipsAPI.Abstractions
     {
         List<OutcomeModel> GetOutcomes();
         void AddOutcomeModel(OutcomeModel model);
-        public void DeleteOutcomeModel(string Name);    
+        void DeleteOutcomeModel(string Name);    
     }
 }

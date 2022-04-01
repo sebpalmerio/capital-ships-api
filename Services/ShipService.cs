@@ -61,6 +61,35 @@ namespace CapitalShipsAPI.Services
             }
         }
 
+        public void UpdateShipModel(string Name, string NewName)
+        {
+            using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    UPDATE Outcomes
+                    SET shipName = $newName
+                    WHERE shipName LIKE $name
+                ";
+                command.Parameters.AddWithValue("$name", Name);
+                command.Parameters.AddWithValue("$newName", NewName);
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"
+                    UPDATE Ships
+                    SET name = $newName
+                    WHERE name = $name
+                ";
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+
         public void DeleteShipModel(string Name)
         {
             using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))

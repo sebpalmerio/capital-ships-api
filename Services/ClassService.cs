@@ -54,12 +54,41 @@ namespace CapitalShipsAPI.Services
                     VALUES ($className, $type, $country, $numGun, $bore, $displacement)
                 ";
 
-                command.Parameters.AddWithValue("$ClassName", model.ClassName);
+                command.Parameters.AddWithValue("$className", model.ClassName);
                 command.Parameters.AddWithValue("$type", model.Type);
                 command.Parameters.AddWithValue("$country", model.Country);
                 command.Parameters.AddWithValue("$numGun", model.NumGun);
                 command.Parameters.AddWithValue("$bore", model.Bore);
                 command.Parameters.AddWithValue("$displacement", model.Displacement);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+
+        public void UpdateClassModel(string Name, string NewName)
+        {
+            using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    UPDATE Ships
+                    SET class = $newClassName
+                    WHERE class LIKE $className
+                ";
+                command.Parameters.AddWithValue("$className", Name);
+                command.Parameters.AddWithValue("$newClassName", NewName);
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"
+                    UPDATE Classes
+                    SET className = $newClassName
+                    WHERE className LIKE $className
+                ";
                 command.ExecuteNonQuery();
 
                 connection.Close();

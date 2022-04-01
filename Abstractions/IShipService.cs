@@ -12,6 +12,7 @@ namespace CapitalShipsAPI.Abstractions
     {
         List<ShipModel> GetShips();
         void AddShipModel(ShipModel model);
-        public void DeleteShipModel(string Name);    
+        void UpdateShipModel(string Name, string NewName);
+        void DeleteShipModel(string Name);    
     }
 }

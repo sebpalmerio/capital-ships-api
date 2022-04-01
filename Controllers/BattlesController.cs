@@ -31,6 +31,13 @@ namespace CapitalShipsAPI.Controllers
             return CreatedAtAction(nameof(Get), entity);
         }
 
+        [HttpPut("UpdateBattle")]
+        public IActionResult Put([FromBody] string BattleName, string NewBattleName)
+        {
+            battleService.UpdateBattleModel(BattleName, NewBattleName);
+            return Ok($"{BattleName} updated to {NewBattleName}");
+        }
+
         [HttpDelete("DeleteBattle")]
         public IActionResult Delete2([FromQuery] string Name)
         {

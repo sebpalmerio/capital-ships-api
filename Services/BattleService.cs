@@ -47,7 +47,7 @@ namespace CapitalShipsAPI.Services
                 var command = connection.CreateCommand();
                 command.CommandText =
                 @"
-                    INSERT INTO Battlees (name, date)
+                    INSERT INTO Battles (name, date)
                     VALUES ($name, $date)
                 ";
 
@@ -58,6 +58,35 @@ namespace CapitalShipsAPI.Services
                 connection.Close();
             }
         }
+
+        public void UpdateBattleModel(string Name, string NewName)
+        {
+            using (var connection = new SqliteConnection("Data Source=Capital_Ships.db"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    UPDATE Outcomes
+                    SET battleName = $newName
+                    WHERE battleName LIKE $name
+                ";
+                command.Parameters.AddWithValue("$name", Name);
+                command.Parameters.AddWithValue("$newName", NewName);
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"
+                    UPDATE Battles
+                    SET battleName = $newName
+                    WHERE battleName = $name
+                ";
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }        
 
         public void DeleteBattleModel(string Name)
         {

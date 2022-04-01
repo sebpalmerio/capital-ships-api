@@ -12,6 +12,7 @@ namespace CapitalShipsAPI.Abstractions
     {
         List<BattleModel> GetBattles();
         void AddBattleModel(BattleModel model);
-        public void DeleteBattleModel(string Name);   
+        void UpdateBattleModel(string Name, string NewName);
+        void DeleteBattleModel(string Name);   
     }
 }

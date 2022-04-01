@@ -33,7 +33,7 @@ namespace CapitalShipsAPI.Controllers
         }
 
         [HttpPut("UpdateShip")]
-        public IActionResult Put([FromBody] string ShipName, string NewShipName)
+        public IActionResult Put(string ShipName, string NewShipName)
         {
             shipService.UpdateShipModel(ShipName, NewShipName);
             return Ok($"{ShipName} updated to {NewShipName}");

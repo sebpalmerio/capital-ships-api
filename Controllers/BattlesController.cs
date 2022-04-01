@@ -32,7 +32,7 @@ namespace CapitalShipsAPI.Controllers
         }
 
         [HttpPut("UpdateBattle")]
-        public IActionResult Put([FromBody] string BattleName, string NewBattleName)
+        public IActionResult Put(string BattleName, string NewBattleName)
         {
             battleService.UpdateBattleModel(BattleName, NewBattleName);
             return Ok($"{BattleName} updated to {NewBattleName}");

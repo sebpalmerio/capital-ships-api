@@ -55,6 +55,8 @@ namespace CapitalShipsAPI
 
             app.UseHttpsRedirection();
 
+            app.UseExceptionHandler("/error");
+
             app.UseRouting();
 
             app.UseAuthorization();

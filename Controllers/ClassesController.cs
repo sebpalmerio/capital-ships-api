@@ -32,7 +32,7 @@ namespace CapitalShipsAPI.Controllers
         }
 
         [HttpPut("UpdateClass")]
-        public IActionResult Put([FromBody] string ClassName, string NewClassName)
+        public IActionResult Put(string ClassName, string NewClassName)
         {
             classService.UpdateClassModel(ClassName, NewClassName);
             return Ok($"{ClassName} updated to {NewClassName}");

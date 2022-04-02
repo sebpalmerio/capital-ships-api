@@ -3,6 +3,7 @@ using CapitalShipsAPI.Abstractions;
 using CapitalShipsAPI.Models.Queries;
 using System;
 using System.Collections.Generic;
+using Serilog;
 
 namespace CapitalShipsAPI.Controllers
 {
@@ -19,19 +20,49 @@ namespace CapitalShipsAPI.Controllers
         [HttpGet("GetMaxSunkDisplacement")]
         public ActionResult<MaxSunkDisplacementModel> GetMaxSunkDisplacementShip()
         {
-            return Ok(queryService.MaxSunkDisplacement());
+            Log.Debug("Fetching ship with max displacement that was sunk in battle");
+            try
+            {
+                Log.Information("Fetch successful");
+                return Ok(queryService.MaxSunkDisplacement());
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Fetch failed");
+            }
         }
 
         [HttpGet("GetGuadalcanalGunSums")]
         public ActionResult<GuadalcanalSumModel> GetGuadalcanalGunSums()
         {
-            return Ok(queryService.GuadalcanalSums());
+            Log.Debug("Fetching the number of guns in US and Japanese used in Guadalcanal");
+            try
+            {
+                Log.Information("Fetch successful");
+                return Ok(queryService.GuadalcanalSums());
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Fetch failed");
+            }
         }
 
         [HttpGet("GetClassesInEveryBattle")]
-        public ActionResult<GuadalcanalSumModel> GetClassesInEveryBattle()
+        public ActionResult<List<string>> GetClassesInEveryBattle()
         {
-            return Ok(queryService.ClassesInEveryBattle());
+            Log.Debug("Fetching classes that participated in every battle");
+            try
+            {
+                Log.Information("Fetch successful");
+                return Ok(queryService.ClassesInEveryBattle());
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Fetch failed");
+            }
         }
     }
 }

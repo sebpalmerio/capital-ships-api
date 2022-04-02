@@ -3,6 +3,7 @@ using CapitalShipsAPI.Abstractions;
 using CapitalShipsAPI.Models.Tables;
 using System;
 using System.Collections.Generic;
+using Serilog;
 
 namespace CapitalShipsAPI.Controllers
 {
@@ -19,28 +20,66 @@ namespace CapitalShipsAPI.Controllers
         [HttpGet("GetClasses")]
         public ActionResult<List<ClassModel>> Get()
         {
-            return Ok(classService.GetClasses());
+            Log.Debug("Fetching class models");
+            try
+            {
+                Log.Information("Fetch successful");
+                return Ok(classService.GetClasses());
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Fetch failed");
+            }
         }
 
         [HttpPost("InsertClass")]
         public IActionResult Post([FromBody] ClassModel entity)
         {
-            classService.AddClassModel(entity);
-            return CreatedAtAction(nameof(Get), entity);
+            Log.Debug($"Adding {entity.ClassName} class");
+            try
+            {
+                Log.Information("Add successful");
+                classService.AddClassModel(entity);
+                return CreatedAtAction(nameof(Get), entity);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Add failed");
+            }
         }
 
         [HttpPut("UpdateClass")]
         public IActionResult Put(string ClassName, string NewClassName)
         {
-            classService.UpdateClassModel(ClassName, NewClassName);
-            return Ok($"{ClassName} updated to {NewClassName}");
+            Log.Debug($"Updating {ClassName}");
+            try
+            {
+                classService.UpdateClassModel(ClassName, NewClassName);
+                return Ok($"{ClassName} updated to {NewClassName}");
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Update failed");
+            }
         }
 
         [HttpDelete("DeleteClass")]
-        public IActionResult Delete4([FromQuery] string Name)
+        public IActionResult Delete([FromQuery] string Name)
         {
-            classService.DeleteClassModel(Name);
-            return Ok("Class deleted");
+            Log.Debug($"Deleting {Name}");
+            try
+            {
+                classService.DeleteClassModel(Name);
+                return Ok("Class deleted");
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Delete failed");
+            }
         }
     }
 }

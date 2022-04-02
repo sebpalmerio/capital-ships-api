@@ -71,7 +71,9 @@ WHERE (O.result = 'sunk') AND (S.name = O.shipName) AND (C.className = S.class) 
                           WHERE (O.result = 'sunk') AND (S.name = O.shipName) AND
                                 (C.className = S.class) AND (O.battleName = B.name)));
 
+
 Returns the name of ships sunk in their first battle
+
 SELECT shipName
 FROM (SELECT *
       FROM Outcomes

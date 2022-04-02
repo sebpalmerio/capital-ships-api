@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using CapitalShipsAPI.Abstractions;
 using CapitalShipsAPI.Services;
+using Serilog;
 
 namespace CapitalShipsAPI
 {
@@ -45,14 +46,11 @@ namespace CapitalShipsAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CapitalShipsAPI v1"));
             }
 
+            app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
-
             app.UseExceptionHandler("/error");
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

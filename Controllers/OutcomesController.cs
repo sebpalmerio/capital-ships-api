@@ -3,6 +3,7 @@ using CapitalShipsAPI.Abstractions;
 using CapitalShipsAPI.Models.Tables;
 using System;
 using System.Collections.Generic;
+using Serilog;
 
 namespace CapitalShipsAPI.Controllers
 {
@@ -19,21 +20,50 @@ namespace CapitalShipsAPI.Controllers
         [HttpGet("GetOutcomes")]
         public ActionResult<List<OutcomeModel>> Get()
         {
-            return Ok(outcomeService.GetOutcomes());
+            Log.Debug("Fetching outcome models");
+            try
+            {
+                Log.Information("Fetch successful");
+                return Ok(outcomeService.GetOutcomes());
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Fetch failed");
+            }
         }
 
         [HttpPost("InsertOutcome")]
         public IActionResult Post([FromBody] OutcomeModel entity)
         {
-            outcomeService.AddOutcomeModel(entity);
-            return CreatedAtAction(nameof(Get), entity);
+            Log.Debug($"Adding outcome with {entity.ShipName} in {entity.BattleName}");
+            try
+            {
+                Log.Information("Add successful");
+                outcomeService.AddOutcomeModel(entity);
+                return CreatedAtAction(nameof(Get), entity);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Add failed");
+            }
         }
 
         [HttpDelete("DeleteOutcome")]
-        public IActionResult Delete3([FromQuery] string Name)
+        public IActionResult Delete([FromQuery] string Name)
         {
-            outcomeService.DeleteOutcomeModel(Name);
-            return Ok("Outcome deleted");
+            Log.Debug($"Deleting {Name}");
+            try
+            {
+                outcomeService.DeleteOutcomeModel(Name);
+                return Ok("Outcome deleted");
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Delete failed");
+            }
         }
     }
 }

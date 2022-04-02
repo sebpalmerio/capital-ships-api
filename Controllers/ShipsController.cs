@@ -3,6 +3,7 @@ using CapitalShipsAPI.Abstractions;
 using CapitalShipsAPI.Models.Tables;
 using System;
 using System.Collections.Generic;
+using Serilog;
 
 namespace CapitalShipsAPI.Controllers
 {
@@ -20,28 +21,68 @@ namespace CapitalShipsAPI.Controllers
         [ActionName(nameof(Get))]
         public ActionResult<List<ShipModel>> Get()
         {
-            return Ok(shipService.GetShips());
+            Log.Debug("Fetching ship models");
+            try
+            {
+                Log.Information("Fetch successful");
+                return Ok(shipService.GetShips());
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Fetch failed");
+            }
         }
 
         [HttpPost("InsertShip")]
         public IActionResult Post([FromBody] ShipModel entity)
         {
-            shipService.AddShipModel(entity);
-            return CreatedAtAction(nameof(Get), entity);
+            Log.Debug($"Adding {entity.Name} ship");
+            try
+            {
+                Log.Information("Add successful");
+                shipService.AddShipModel(entity);
+                return CreatedAtAction(nameof(Get), entity);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Add failed");
+            }
         }
 
         [HttpPut("UpdateShip")]
         public IActionResult Put(string ShipName, string NewShipName)
         {
-            shipService.UpdateShipModel(ShipName, NewShipName);
-            return Ok($"{ShipName} updated to {NewShipName}");
+            Log.Debug($"Updating {ShipName}");
+            try
+            {
+                Log.Information("Update successful");
+                shipService.UpdateShipModel(ShipName, NewShipName);
+                return Ok($"{ShipName} updated to {NewShipName}");
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Update failed");
+            }
         }
 
         [HttpDelete("DeleteShip")]
         public IActionResult Delete([FromQuery] string Name)
         {
-            shipService.DeleteShipModel(Name);
-            return Ok("Ship deleted");
+            Log.Debug($"Deleting {Name}");
+            try
+            {
+                Log.Information("Delete successful");
+                shipService.DeleteShipModel(Name);
+                return Ok("Ship deleted");
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"{ex.Message}");
+                return BadRequest("Delete failed");
+            }
         }
     }
 }

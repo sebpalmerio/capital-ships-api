@@ -16,16 +16,22 @@ namespace CapitalShipsAPI.Controllers
             queryService = _queryService ?? throw new ArgumentNullException(nameof(_queryService));
         }
 
-        [HttpGet("GetBattleNames")]
-        public ActionResult<List<QueryModel>> GetBattleNames()
-        {
-            return Ok(queryService.Query());
-        }
-
         [HttpGet("GetMaxSunkDisplacement")]
-        public ActionResult<MaxSunkDisplacementModel> Get()
+        public ActionResult<MaxSunkDisplacementModel> GetMaxSunkDisplacementShip()
         {
             return Ok(queryService.MaxSunkDisplacement());
+        }
+
+        [HttpGet("GetGuadalcanalGunSums")]
+        public ActionResult<GuadalcanalSumModel> GetGuadalcanalGunSums()
+        {
+            return Ok(queryService.GuadalcanalSums());
+        }
+
+        [HttpGet("GetClassesInEveryBattle")]
+        public ActionResult<GuadalcanalSumModel> GetClassesInEveryBattle()
+        {
+            return Ok(queryService.ClassesInEveryBattle());
         }
     }
 }

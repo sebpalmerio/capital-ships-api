@@ -1,0 +1,80 @@
+Sample queries used in this API and extras:
+
+
+Returns the name of the class(es) which had a ship participate in every battle
+
+SELECT class
+FROM (SELECT class, COUNT(DISTINCT battleName) AS BF
+      FROM (SELECT *
+            FROM Outcomes AS O, Ships AS S
+            WHERE O.shipName = S.name)
+            GROUP BY class)
+      WHERE BF IN (SELECT COUNT(name) AS TB
+                   FROM Battles);
+
+
+Returns ship name, number of guns, and displacement of ships which were in battle in 1944
+
+SELECT O.shipName, C.numGun, C.displacement
+FROM Ships AS S, Battles AS B, Classes AS C, Outcomes AS O
+WHERE (B.date LIKE ‘1944%’) AND (O.shipName = S.name) AND (S.class = C.className);
+
+
+Returns the total number of guns from US and Japanese ships in the battle 'Guadalcanal'
+
+SELECT *
+FROM (SELECT SUM(numGun) AS US
+      FROM (SELECT *
+            FROM Outcomes, Ships, Classes
+            WHERE (battleName = 'Guadalcanal') AND (shipName = name) AND
+                  (class = className))
+            GROUP BY country
+            HAVING country='USA'),
+           (SELECT SUM(numGun) AS Jap
+            FROM (SELECT *
+                  FROM Outcomes, Ships, Classes
+                  WHERE (battleName = 'Guadalcanal') AND (shipName = name) AND
+                        (class = className))
+                  GROUP BY country
+                  HAVING country='Japan');
+
+
+Returns name of ships sunk or damaged in battle
+
+SELECT name
+FROM Ships
+    EXCEPT
+SELECT shipName
+FROM Outcomes
+WHERE result != ‘ok’;
+
+
+Returns countries that has classes of both types 'bb' and 'bc'
+
+SELECT country
+FROM Classes
+WHERE type = ‘bb’
+    INTERSECT
+SELECT country
+FROM Classes
+WHERE type = ‘bc’;
+
+
+Returns the ship name, battle name, and battle date of the ship that sunk in battle with the max displacement
+
+SELECT O.shipName, O.battleName, B.date
+FROM Classes AS C, Ships AS S, Outcomes AS O, Battles AS B
+WHERE (O.result = 'sunk') AND (S.name = O.shipName) AND (C.className = S.class) AND
+      (O.battleName = B.name) AND
+      (C.displacement IN (SELECT MAX(C.displacement)
+                          FROM Classes AS C, Ships AS S, Outcomes AS O, Battles AS B
+                          WHERE (O.result = 'sunk') AND (S.name = O.shipName) AND
+                                (C.className = S.class) AND (O.battleName = B.name)));
+
+Returns the name of ships sunk in their first battle
+SELECT shipName
+FROM (SELECT *
+      FROM Outcomes
+      GROUP BY shipName
+      HAVING COUNT(battleName) = 1)
+WHERE result = 'sunk';

@@ -5,7 +5,8 @@ namespace CapitalShipsAPI.Abstractions
 {
     public interface IQueryService
     {
-        List<QueryModel> Query();
-        MaxSunkDisplacementModel MaxSunkDisplacement();  
+        MaxSunkDisplacementModel MaxSunkDisplacement();
+        GuadalcanalSumModel GuadalcanalSums();
+        List<string> ClassesInEveryBattle();
     }
 }
